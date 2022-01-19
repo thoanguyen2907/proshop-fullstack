@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { store } from './redux/rootReducer';
-
+import Popper from 'popper.js';
 
 
 ReactDOM.render(
