@@ -96,6 +96,17 @@ const getUsers = async (req, res) => {
     const users = await User.find({})
     res.json(users)
 }
+const getUserById = async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password')
+  
+    if (user) {
+      res.json(user)
+    } else {
+      res.status(404)
+      throw new Error('User not found')
+    }
+  }
+  
 
 
-export {authUser, getUsers, getUserProfile, registerUser, updateUserProfile}
+export {authUser, getUsers, getUserProfile, registerUser, updateUserProfile, getUserById}

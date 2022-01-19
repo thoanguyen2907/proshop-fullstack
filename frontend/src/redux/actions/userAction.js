@@ -1,5 +1,6 @@
 import  axios from 'axios' 
-import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from '../constants/constants'
+import { get } from 'jquery'
+import { USER_DETAIL_FAIL, USER_DETAIL_REQUEST, USER_DETAIL_SUCCESS, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_UPDATE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS } from '../constants/constants'
 
 
 
@@ -56,6 +57,68 @@ export const register  =  (name, email, password) => {
        console.log(error);
        dispatch({
            type: USER_REGISTER_FAIL
+       })
+    }
+    }
+}
+
+
+export const getUserDetails  =  (id) => {
+    return async (dispatch, getState) => {
+    try {
+        dispatch({type: USER_DETAIL_REQUEST})
+
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        console.log('userInfo', userInfo);
+        
+        const config = {
+            headers: {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const {data} = await axios.get(`http://localhost:5000/api/users/${userInfo._id}`, config)
+        console.log("data", data);
+        
+        dispatch({
+            type: USER_DETAIL_SUCCESS,
+            payload: data
+        })
+
+    } catch(error) {
+       console.log(error);
+       dispatch({
+           type: USER_DETAIL_FAIL
+       })
+    }
+    }
+}
+
+export const updateUserProfileFrontEnd  =  (user) => {
+    return async (dispatch, getState) => {
+    try {
+        dispatch({type: USER_UPDATE_REQUEST})
+
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+            
+        const config = {
+            headers: {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+        const {data} = await axios.put('http://localhost:5000/api/users/profile', user, config)
+        console.log("data", data);
+        
+        dispatch({
+            type: USER_UPDATE_SUCCESS,
+            payload: data
+        })
+
+    } catch(error) {
+       console.log(error);
+       dispatch({
+           type: USER_UPDATE_FAIL
        })
     }
     }
