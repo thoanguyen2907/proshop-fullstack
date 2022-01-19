@@ -1,7 +1,16 @@
 import React from 'react'
 import { Nav } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { logout } from '../redux/actions/userAction';
 export default function Header() {
+  const dispatch = useDispatch()
+  const  {loading, error, userInfo} = useSelector(state => state.userLogin)
+
+  const logoutHandler = () => {
+    console.log('logoutHandler');
+    dispatch(logout())
+  }
     return (
         <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -15,9 +24,21 @@ export default function Header() {
         <li className="nav-item">
           <NavLink className="nav-link text-white" to="/cart"> <i className="fas fa-shopping-cart"></i> Cart</NavLink>
         </li>
-        <li className="nav-item">
-          <NavLink className="nav-link text-white" to="/login"> <i className="fas fa-user"></i> Sign in</NavLink>
-        </li>
+          {
+            userInfo? (
+    <div className="dropdown">
+  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {userInfo.name}
+  </button>
+  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <NavLink to = "/profile">   <li className="dropdown-item" to = "/profile">Profile</li></NavLink>
+    <li className="dropdown-item" onClick={logoutHandler}> Logout
+    </li>
+  </div>
+</div>) : <NavLink className="nav-link text-white" to="/login"> <i className="fas fa-user"></i> Sign in</NavLink>
+          }
+          
+       
       </ul>
     </div>
   </div>
