@@ -10,7 +10,7 @@ router.get('/', getUsers)
 router.get('/:id', getUserById)
 router.get('/profile', protect, getUserProfile)
 router.post('/register', registerUser)
-router.put('/profile', protect, updateUserProfile)
+router.put('/profile/:id', protect, updateUserProfile)
 
 
 

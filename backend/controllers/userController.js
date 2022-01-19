@@ -38,7 +38,7 @@ const getUserProfile = async (req, res) => {
 }
 
 const updateUserProfile = async (req, res) => {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.params.id)
 
     if(user) {
         user.name = req.body.name || user.name 
@@ -51,8 +51,8 @@ const updateUserProfile = async (req, res) => {
             _id: updatedUser._id,
             name: updatedUser.name,
             email: updatedUser.email,
-            isAdmin: updatedUser.isAdmin
-        
+            isAdmin: updatedUser.isAdmin,
+            token: generateToken(user._id)
         })
     } else{
         res.status(404).json({

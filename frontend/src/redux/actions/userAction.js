@@ -8,11 +8,7 @@ export const login  =  (email, password) => {
     return async (dispatch, getState) => {
     try {
         dispatch({type: USER_LOGIN_REQUEST})
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
+        
         const {data} = await axios.post('http://localhost:5000/api/users/login', {email, password})
         console.log(data);
         
@@ -74,10 +70,10 @@ export const getUserDetails  =  (id) => {
         const config = {
             headers: {
                 'Content-Type' : 'application/json',
-                Authorization: `Bearer ${userInfo.token}`
+                Authorization: `Bearer ${id.token}`
             }
         }
-        const {data} = await axios.get(`http://localhost:5000/api/users/${userInfo._id}`, config)
+        const {data} = await axios.get(`http://localhost:5000/api/users/${id}`, config)
         console.log("data", data);
         
         dispatch({
@@ -96,20 +92,21 @@ export const getUserDetails  =  (id) => {
 
 export const updateUserProfileFrontEnd  =  (user) => {
     return async (dispatch, getState) => {
+     
     try {
         dispatch({type: USER_UPDATE_REQUEST})
 
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-            
+        console.log('userInfo', userInfo);
         const config = {
             headers: {
                 'Content-Type' : 'application/json',
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
-        const {data} = await axios.put('http://localhost:5000/api/users/profile', user, config)
-        console.log("data", data);
-        
+        const {data} = await axios.put(`http://localhost:5000/api/users/profile/${userInfo._id}`, user, config)
+    
+        localStorage.setItem('userInfo', JSON.stringify(data))
         dispatch({
             type: USER_UPDATE_SUCCESS,
             payload: data

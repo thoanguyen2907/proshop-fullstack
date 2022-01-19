@@ -11,60 +11,50 @@ export default function ProfileScreen({location, history}) {
     const [name, setName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
-    const {userInfo} = useSelector(state => state.userLogin)
+    // const {userInfo} = useSelector(state => state.userLogin)
+    const userInfo = JSON.parse( localStorage.getItem('userInfo'))
     const {success} = useSelector(state => state.userUpdateProfile)
-    const {user} = useSelector((state) => state.userDetail)
-    console.log('userInfo', userInfo);
-    
-    console.log('user', user);
+  
+     console.log('userInfo', userInfo);
 
-
-    const handleSubmit = (e) => {
+    const submitHandler = (e) => {
         e.preventDefault()
-        if(password !== confirmPassword) {
-            setMessage('Password do not match')
-            return;
-        }
-        
+        // if(password !== confirmPassword) {
+        //     setMessage('Password do not match')
+        //     return;
+        // }
+
         dispatch(updateUserProfileFrontEnd({id: userInfo._id, name, email, password}))
     }
+
     useEffect(() => {
-        if(!userInfo) {
+        if (!userInfo) {
             history.push('/login')
-        } else {
-            if(!user) {
-                dispatch(getUserDetails('profile'))
-                setName(user.name)
-                setEmail(user.email)
-            }
-        }
+          } else {
+            setEmail(userInfo.email)
+            setName(userInfo.name)
+          }
+               
+    }, []);
 
-    }, [history, userInfo, dispatch, user.name, user.email, user]);
-
-    // useEffect(() => {
-       
-    //             dispatch(getUserDetails('profile'))
-    //             setName(user.name)
-    //             setEmail(user.email)
-        
-
-    // }, [user]);
+ 
 
  
     return (
         <div className='container'>
             <h3>Update Profile</h3>
-         <form onSubmit = {handleSubmit}>
+         <form onSubmit = {submitHandler}>
 
          <div className="mb-3">
     <label className="form-label">Your Name</label>
-    <input type="text" className="form-control" name = "name" onChange={(e) => setName(e.target.value)}  value = {name}/>
+    <input type="text" className="form-control" name = "name" onChange={(e) => setName(e.target.value)
+    }  value = {name}/>
 
   </div>
 
   <div className="mb-3">
     <label className="form-label">Email address</label>
-    <input type="email" className="form-control" name = "email" onChange={(e) => setEmail(e.target.value)}  value = {email}/>
+    <input type="email" className="form-control" name = "email" onChange={(e) => setEmail(e.target.email)}  value = {email}/>
     <div className="form-text">We'll never share your email with anyone else.</div>
   </div>
   <div className="mb-3">
