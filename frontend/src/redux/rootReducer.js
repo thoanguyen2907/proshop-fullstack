@@ -2,8 +2,26 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk'
 
 import { productReducer } from './reducer/productReducer';
-
+import { cartReducer } from './reducer/cartReducer';
+import { userReducer } from './reducer/userReducer';
 export const rootReducer = combineReducers({
-    productReducer
+    productReducer,
+    cart: cartReducer,
+    userLogin: userReducer
 })
-export const store = createStore(rootReducer, applyMiddleware(thunk)); 
+
+const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
+
+const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
+
+const initialState = {
+    cart: {
+        cartItems: cartItemsFromStorage
+    }, 
+    userLogin: {
+        userInfo: userInfoFromStorage
+    },
+}
+
+
+export const store = createStore(rootReducer, initialState, applyMiddleware(thunk)); 

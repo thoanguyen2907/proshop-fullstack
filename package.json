@@ -15,6 +15,7 @@
     "express": "^4.17.2",
     "invariant": "^2.2.4",
     "js-tokens": "^4.0.0",
+    "jsonwebtoken": "^8.5.1",
     "loose-envify": "^1.4.0",
     "mongoose": "^6.1.6",
     "nodemon": "^2.0.15",
