@@ -37,7 +37,26 @@ export default function Header() {
   </div>
 </div>) : <NavLink className="nav-link text-white" to="/login"> <i className="fas fa-user"></i> Sign in</NavLink>
           }
+    
+    {userInfo && userInfo.isAdmin && (
+                <div className="dropdown">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Admin
+  </button>
+  <div className="dropdown-menu" aria-labelledby="dropdownMenuButtonAdmin">
+
+                
+                    <NavLink to = "/admin/users">   <li className="dropdown-item">Users</li></NavLink>
+             
+             
+                    <NavLink to = "/admin/products"> <li className="dropdown-item"> Products</li></NavLink>
+           
           
+                    <NavLink to = "/admin/orders"> <li className="dropdown-item"> Orders </li> </NavLink>
+              
+                  </div>
+                </div>
+              )} 
        
       </ul>
     </div>

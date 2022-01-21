@@ -1,8 +1,8 @@
 import  axios from 'axios' 
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/constants'
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD, CART_SAVE_SHIPPING_ADDRESS } from '../constants/constants'
 
 
-export const addToCart  =  (id, qty) => {
+export const addToCart  =  (id, quantity) => {
     return async (dispatch, getState) => {
     try {
        
@@ -15,7 +15,7 @@ export const addToCart  =  (id, qty) => {
                 image: data.image, 
                 price: data.price, 
                 countInStock: data.countInStock,
-                qty
+                quantity
             }
         }) 
         localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
@@ -43,4 +43,38 @@ export const removeFromCart  =  (id) => {
     }
     }
 }
+
+export const saveShippingAddress  =  (data) => {
+    return async (dispatch, getState) => {
+    try { 
+      
+        dispatch({
+            type: CART_SAVE_SHIPPING_ADDRESS,
+            payload: data
+        }) 
+        localStorage.setItem('shippingAddress', JSON.stringify(getState().cart.shippingAddress))
+
+    } catch(error) {
+       console.log(error);
+    }
+    }
+}
+
+export const savePaymentMethod  =  (data) => {
+    return async (dispatch, getState) => {
+    try { 
+      
+        dispatch({
+            type: CART_SAVE_PAYMENT_METHOD,
+            payload: data
+        }) 
+        localStorage.setItem('paymentMethod', JSON.stringify(data))
+
+    } catch(error) {
+       console.log(error);
+    }
+    }
+}
+
+
 
