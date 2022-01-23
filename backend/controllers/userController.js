@@ -38,7 +38,7 @@ const getUserProfile = async (req, res) => {
 }
 
 const updateUserProfile = async (req, res) => {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.params.id)
 
     if(user) {
         user.name = req.body.name || user.name 
@@ -51,8 +51,8 @@ const updateUserProfile = async (req, res) => {
             _id: updatedUser._id,
             name: updatedUser.name,
             email: updatedUser.email,
-            isAdmin: updatedUser.isAdmin
-        
+            isAdmin: updatedUser.isAdmin,
+            token: generateToken(user._id)
         })
     } else{
         res.status(404).json({
@@ -96,6 +96,52 @@ const getUsers = async (req, res) => {
     const users = await User.find({})
     res.json(users)
 }
+const getUserById = async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password')
+  
+    if (user) {
+      res.json(user)
+    } else {
+      res.status(404)
+      throw new Error('User not found')
+    }
+  }
 
+  const deleteUser = async (req, res) => {
+    const user = await User.findById(req.params.id)
+  
+    if (user) {
+        await User.deleteOne({ _id: req.params.id})
+        res.status(201).json({
+            message: "Delete successfully !!"
+        })
+    } else {
+      res.status(404).json({
+        messages: 'User not found'
+      })
+    }
+  }
+  const updateUser = async (req, res) => {
+    const user = await User.findById(req.params.id)
+    if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.isAdmin = req.body.isAdmin
+  
+      const updatedUser = await user.save()
+  
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      })
+    } else {
+      res.status(404).json({
+          message: 'User not found'
+      })
+    }
+  }
 
-export {authUser, getUsers, getUserProfile, registerUser, updateUserProfile}
+export {authUser, getUsers, getUserProfile, registerUser,
+    deleteUser, updateUserProfile, getUserById, updateUser}

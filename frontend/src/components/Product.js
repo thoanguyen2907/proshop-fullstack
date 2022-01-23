@@ -10,12 +10,12 @@ export default function Product(props) {
   <img src= {product.image} className="card-img-top" alt={product.name}/>
   <div className="card-body" style={{padding: '20px'}}>
 
-   <NavLink to = {`/product/${product._id}`}><h5 className="card-title text-dark">{product.name}</h5></NavLink> 
+   <NavLink to = {`/product/${product._id}`} className="text-decoration-none"><h5 className="card-title text-dark">{product.name}</h5></NavLink> 
     <div><Rating value = {product.rating} text={`${product.numReviews} reviews`}/></div>
    
     <p className="card-text">{product.rating} from {product.numReviews} reviews</p>
     <h4  className="card-text">${product.price}</h4>
-    <NavLink to = {`/product/${product._id}`} >Add to cart </NavLink>
+    <NavLink to = {`/product/${product._id}`} className="text-decoration-none"> <button className='btn btn-dark'> Add to cart </button></NavLink>
   </div>
 </div>
         </div>

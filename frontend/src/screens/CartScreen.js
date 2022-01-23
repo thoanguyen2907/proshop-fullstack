@@ -10,7 +10,6 @@ export default function CartScreen({match, location, history}) {
     const productId = match.params.id
 
     const qty = location.search? Number(location.search.split('=')[1]) : 1
-
     
     useEffect(() => {
         if(productId) {
@@ -19,14 +18,14 @@ export default function CartScreen({match, location, history}) {
     }, [dispatch, productId, qty])
 
     const removeFromCartHandler = (id) => {
-        console.log('remove');
+       
         dispatch(removeFromCart(id))
     }
     const checkoutHandler = () => {
         history.push('/login?redirect=shipping')
     }
     return ( 
-        <div>
+        <div className='container'>
           <div className="row">
           <h1>Shopping Cart</h1>
               <div className="col-8">
@@ -40,8 +39,8 @@ export default function CartScreen({match, location, history}) {
                                     <div className="col-2">
                                         <img src={item.image} alt={item.name}  style = {{width: '100px'}} className="fluid" />
                                     </div>
-                                    <div className="col-3">
-                                        <NavLink to = {`/product/${item.product}`}>{item.name}</NavLink>
+                                    <div className="col-4">
+                                        <NavLink to = {`/product/${item.product}`} className="text-dark text-decoration-none"> <p>{item.name}</p></NavLink>
                                     </div>
                                     <div className="col-2">{item.price}</div>
                                     <div className="col-2">
@@ -70,14 +69,14 @@ export default function CartScreen({match, location, history}) {
               <div className="col-4">
               <ul className="list-group list-group-flush">
   <li className="list-group-item">
-      <h5>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items</h5>
-      ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+      <h5>Subtotal ({cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items</h5>
+      ${cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0)}
   </li>
- <li  className="list-group-item"> 
+ <NavLink  className="list-group-item" to = "/shipping"> 
         <button type = "button" className="btn-dark" onClick = {checkoutHandler}> 
         Proceed To Checkout
         </button>
- </li>
+ </NavLink>
 </ul>
               </div>
           </div>
