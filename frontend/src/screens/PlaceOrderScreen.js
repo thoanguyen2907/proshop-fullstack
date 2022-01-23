@@ -69,7 +69,7 @@ export default function PlaceOrderScreen() {
                                             <img src={item.image} alt={item.name}  style = {{width: '40px', height: '40px'}}/>
                                         </div>
                                         <div className="col-4">
-                                        <p> <NavLink to = {`/product/${item.product}`}> 
+                                        <p> <NavLink to = {`/product/${item.product}`} className='text-dark text-decoration-none'> 
                                            {item.name}  </NavLink></p>
                                         </div>
                                         <div className="col-4">

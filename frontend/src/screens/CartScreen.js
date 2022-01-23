@@ -18,14 +18,14 @@ export default function CartScreen({match, location, history}) {
     }, [dispatch, productId, qty])
 
     const removeFromCartHandler = (id) => {
-        console.log('remove');
+       
         dispatch(removeFromCart(id))
     }
     const checkoutHandler = () => {
         history.push('/login?redirect=shipping')
     }
     return ( 
-        <div>
+        <div className='container'>
           <div className="row">
           <h1>Shopping Cart</h1>
               <div className="col-8">
@@ -39,8 +39,8 @@ export default function CartScreen({match, location, history}) {
                                     <div className="col-2">
                                         <img src={item.image} alt={item.name}  style = {{width: '100px'}} className="fluid" />
                                     </div>
-                                    <div className="col-3">
-                                        <NavLink to = {`/product/${item.product}`}>{item.name}</NavLink>
+                                    <div className="col-4">
+                                        <NavLink to = {`/product/${item.product}`} className="text-dark text-decoration-none"> <p>{item.name}</p></NavLink>
                                     </div>
                                     <div className="col-2">{item.price}</div>
                                     <div className="col-2">

@@ -2,19 +2,16 @@
 import React, { lazy, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getUserList } from '../redux/actions/userAction';
+import { deleteUser, getUserList } from '../redux/actions/userAction';
 import { history } from '../utils/history/history';
 
 export default function UserScreen() {
     const dispatch = useDispatch()
     const {loading, users} = useSelector(state => state.userList)
     const {userInfo} = useSelector(state => state.userLogin)
-    console.log('userInfo', userInfo);
-    
-    // const userInfo = JSON.parse( localStorage.getItem('userInfo'))
 
-    const deleteHandler = () => {
-        console.log('deleteHandler');
+    const deleteHandler = (id) => {
+        dispatch(deleteUser(id))
     }
     useEffect(() => {
         if(userInfo && userInfo.isAdmin) {
@@ -55,7 +52,7 @@ export default function UserScreen() {
                             )}
                           </td>
                           <td>
-                            <NavLink to={`/admin/user/${user._id}/edit`}>
+                            <NavLink to={`/admin/edit/user/${user._id}`}>
                               <button className='btn-light'>
                                 <i className='fas fa-edit'></i>
                               </button>

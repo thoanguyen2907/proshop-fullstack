@@ -26,7 +26,7 @@ export default function Header() {
         </li>
           {
             userInfo? (
-    <div className="dropdown">
+    <div className="dropdown mx-2">
   <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {userInfo.name}
   </button>

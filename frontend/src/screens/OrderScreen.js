@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { createOrder, getOrderDetail, payOrder } from '../redux/actions/orderAction';
+import { createOrder, deliverOrder, getOrderDetail, payOrder } from '../redux/actions/orderAction';
 import { history } from '../utils/history/history';
 import axios from 'axios'; 
 import { PayPalButton } from "react-paypal-button-v2";
@@ -13,16 +13,31 @@ export default function OrderScreen({match}) {
     const dispatch = useDispatch()
     const orderId = match.params.id
     const orderDetail = useSelector(state => state.orderDetail)
+
+    const orderDeliver = useSelector((state) => state.orderDeliver)
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
     const [sdkReady, setSdkReady] = useState(false);
     const {order, loading } = orderDetail;
-
+  console.log('order', order);
     const orderPay = useSelector(state => state.orderPay)
 
     
     const {loading:loadingPay, success:successPay } = orderPay;
 
-    
+    const deliverHandler = () => {
+      dispatch(deliverOrder(order))
+    }
+  
+
     useEffect(() => {
+      if (!userInfo) {
+        history.push('/login')
+      }
+
         const addPayPalScript = async () => {
             const {data: clientId} = await axios.get('http://localhost:5000/api/config/paypal')
             console.log(clientId);
@@ -49,12 +64,11 @@ export default function OrderScreen({match}) {
     }, [dispatch, orderId, successPay, order]);
 
     const successPaymentHandler = (paymentResult) => {
-        console.log(paymentResult);
         dispatch(payOrder(orderId,paymentResult ))
     }
     
 
-  return <div>
+  return <div className="container">
       <CheckoutSteps step1 step2 step3 step4/>
       OrderScreen
       <h1>Order {order?._id}</h1>
@@ -109,13 +123,14 @@ export default function OrderScreen({match}) {
                     <li className="list-group-item" key={index}>
                       <div className="row">
                         <div className="col">
-                          <image
+                          <img
+                            style={{width: "50px", height: "50px"}}
                             src=  {item?.image}
                             alt={item?.name}
                           />
                         </div>
                         <div className="col">
-                          <NavLink to={`/product/${item?.product}`}>
+                          <NavLink to={`/product/${item?.product}`} className="text-dark text-decoration-none">
                             {item?.name}
                           </NavLink>
                         </div>
@@ -168,6 +183,22 @@ export default function OrderScreen({match}) {
                       ) }
                   </li>
               )}
+
+{loadingDeliver && <h3>Loading ...</h3> }
+              {userInfo &&
+                userInfo?.isAdmin &&
+                order?.isPaid &&
+                !order?.isDelivered && (
+                  <li>
+                    <button
+                      type='button'
+                      className='btn btn-dark'
+                      onClick={deliverHandler} >
+                      Mark As Delivered
+                    </button>
+                  </li>
+                )}
+
             </ul>
           </div>
         </div>

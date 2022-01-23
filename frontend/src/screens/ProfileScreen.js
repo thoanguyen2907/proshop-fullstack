@@ -60,7 +60,7 @@ export default function ProfileScreen({location, history}) {
 
 <div className="mb-3">
 <label className="form-label">Email address</label>
-<input type="email" className="form-control" name = "email" onChange={(e) => setEmail(e.target.email)}  value = {email}/>
+<input type="email" className="form-control" name = "email" onChange={(e) => setEmail(e.target.value)}  value = {email}/>
 <div className="form-text">We'll never share your email with anyone else.</div>
 </div>
 <div className="mb-3">

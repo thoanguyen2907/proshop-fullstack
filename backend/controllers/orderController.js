@@ -19,7 +19,7 @@ const addOrderItems = async (req, res) => {
 }
 
 const getAllOrders = async (req, res) => {
-    const products = await Order.find({})
+    const products = await Order.find({}).populate('user', 'name email')
     res.json(products)
 }
 const getOrderDetail = async (req, res) => {
@@ -31,6 +31,23 @@ const getOrderDetail = async (req, res) => {
         throw new Error('Order not found')
     }
 }
+const updateOrderToDelivered = async (req, res) => {
+    const order = await Order.findById(req.params.id)
+  
+    if (order) {
+      order.isDelivered = true
+      order.deliveredAt = Date.now()
+  
+      const updatedOrder = await order.save()
+  
+      res.json(updatedOrder)
+    } else {
+      res.status(404).json({
+          message: "Order Not Found !!!"
+      })
+    }
+  }
+
 //update order to paid 
 
 const updateOrderToPaid = async (req, res) => {
@@ -65,4 +82,4 @@ const getMyOrders = async (req, res) => {
 
 
 
-export {addOrderItems, getAllOrders, getOrderDetail, updateOrderToPaid, getMyOrders}
+export {addOrderItems, getAllOrders, getOrderDetail, updateOrderToPaid, updateOrderToDelivered, getMyOrders}
